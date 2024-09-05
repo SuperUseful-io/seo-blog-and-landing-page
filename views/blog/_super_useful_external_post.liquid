@@ -1,0 +1,56 @@
+---
+layout: main
+pagination:
+  data: blogSuperUseful
+  size: 1
+  alias: post
+permalink: "/blog/{{ post.title | slugify }}/"
+---
+
+{% comment %} Calculate the number of days since the post was published {% endcomment %}
+{% assign postDate = date | date: "%s" %}
+{% assign currentDate = "now" | date: "%s" %}
+{% assign daysAgo = currentDate | minus: postDate | divided_by: 86400 | round %}
+
+{% comment %} Breadcrumbs navigation {% endcomment %}
+<div class="breadcrumbs text-sm">
+  <ul>
+    <li><a href="/blog">Blog</a></li>
+    <li>{{ post.title }}</li>
+  </ul>
+</div>
+
+<div class="blog-post container mx-auto max-w-screen-md pt-10">
+  {% comment %} Display post tags {% endcomment %}
+  {% if post.tags %}  
+    {% for tag in post.tags %}
+      {% if tag != 'post' %}
+        <div class="badge badge-ghost">{{ tag }}</div>
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+
+  {% comment %} Post title {% endcomment %}
+  <h1 class="font-suf text-3xl md:text-5xl pt-4 pb-1">{{ post.title }}</h1>
+
+  {% comment %} Post metadata: publication date and author {% endcomment %}
+  <p class="text-xs text-gray-500 py-2">
+    Published  
+    <time datetime="{{ post.date | date: '%Y-%m-%d' }}">
+      {% if daysAgo < 50 %}
+        {{ daysAgo }} day{% if daysAgo != 1 %}s{% endif %} ago
+      {% else %}
+        on {{ post.date | date: "%b %d, %Y" }}
+      {% endif %}
+    </time> by {{ post.author }}
+  </p>
+
+  {% comment %} Post content {% endcomment %}
+  <article class="pb-10 text-md">
+    {% if post.hero_image %}
+      {% image post.hero_image, post.hero_image_alt %}
+    {% endif %}
+    {% assign markdownified_content = post.content | markdownify %}
+    {{ markdownified_content }}
+  </article>
+</div>

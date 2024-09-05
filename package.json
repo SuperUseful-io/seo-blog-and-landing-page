@@ -1,0 +1,35 @@
+{
+  "name": "super-useful-seo-landing-page-and-blog",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {    
+    "dev": "npm-run-all -p dev:*",
+    "dev:css": "tailwindcss -i style/app.css -o dist/style/app.css --postcss --watch",
+    "dev:11ty": "NODE_ENV=development rm -rf dist && npx @11ty/eleventy --serve  --port=8081",
+    "build": "npm run build:css && npm run build:11ty",
+    "build:11ty": "npx @11ty/eleventy",
+    "build:css": "tailwindcss -i style/app.css -o dist/style/app.css --postcss --minify"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@11ty/eleventy": "^2.0.1",
+    "@11ty/eleventy-img": "^4.0.2",
+    "@11ty/eleventy-plugin-rss": "^1.2.0",
+    "@tailwindcss/typography": "^0.5.14",
+    "autoprefixer": "^10.4.20",
+    "cssnano": "^7.0.5",
+    "daisyui": "^4.12.10",
+    "dotenv": "^16.4.5",
+    "html-minifier-terser": "^7.2.0",
+    "markdown-it": "^14.1.0",
+    "node-fetch": "^2.7.0",
+    "postcss": "^8.4.41",
+    "postcss-import": "^16.1.0",
+    "tailwindcss": "^3.4.10"
+  },
+  "devDependencies": {
+    "npm-run-all": "^4.1.5"
+  }
+}

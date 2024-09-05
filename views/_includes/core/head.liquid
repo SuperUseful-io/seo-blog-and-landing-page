@@ -1,0 +1,22 @@
+
+<head>
+  
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="{{description | default: defaultSettings.meta_description}}">
+  
+  <title>{{ title }}</title>
+
+
+  <link rel="icon" href="/assets/favicon/favicon.ico" sizes="32x32">
+  <link rel="icon" href="/assets/favicon/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/assets/favicon/apple-touch-icon.png">
+  <link rel="manifest" href="/assets/favicon/site.webmanifest">
+
+
+
+  {% assign timestamp = 'now' | date: '%s' %}
+  <link rel="stylesheet" href="{{ '/style/app.css' | url }}?{{timestamp}}">
+
+</head>

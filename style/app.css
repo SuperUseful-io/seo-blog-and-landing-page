@@ -1,0 +1,193 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.logo {
+  img {
+    display: inline-block; 
+    /* display: none; Switch inline-block above to none if you want hide the logo */
+    width: 30px;
+    margin-right: 8px;
+    margin-top: -5px;
+  }
+}
+
+
+
+.blog-post-card img {
+  max-width: 492px;
+  max-height: 328px;
+}
+
+.blog-post {
+  
+  a {
+    @apply text-blue-600 hover:text-blue-800 underline bg-transparent;
+    transition: color 0.3s ease;
+
+    &:visited {
+      @apply text-purple-600;
+    }
+
+    &:active {
+      @apply text-red-600;
+    }
+
+    &:focus {
+      @apply outline-none ring-2 ring-blue-300;
+    }
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold mt-0;
+  }
+
+  h1 {
+    @apply text-4xl mb-4 mt-6;
+  }
+
+  h2 {
+    @apply text-3xl mb-3 mt-5;
+  }
+
+  h3 {
+    @apply text-2xl mb-3 mt-4;
+  }
+
+  h4 {
+    @apply text-xl mb-2 mt-3;
+  }
+
+  h5 {
+    @apply text-lg mb-2 mt-3;
+  }
+
+  h6 {
+    @apply text-base mb-2 mt-3;
+  }
+
+  p {
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+
+  img {
+    @apply drop-shadow-md rounded-md my-4;
+  }
+
+  hr {
+    @apply h-0 overflow-visible;
+  }
+
+  b, strong {
+    @apply font-bold;
+  }
+
+  code, kbd, samp, pre {
+    @apply font-mono text-base;
+  }
+
+  small {
+    @apply text-sm;
+  }
+
+  sub, sup {
+    @apply text-xs leading-none relative align-baseline;
+  }
+
+  sub {
+    @apply bottom-[-0.25em];
+  }
+
+  sup {
+    @apply top-[-0.5em];
+  }
+
+  table {
+    @apply border-collapse text-left w-full mb-4;
+  }
+
+  th, td {
+    @apply p-2 border border-gray-300;
+  }
+
+  th {
+    @apply font-bold;
+  }
+
+  thead {
+    @apply bg-gray-100;
+  }
+
+  button, input, optgroup, select, textarea {
+    @apply text-base m-0;
+  }
+
+  textarea {
+    @apply align-top;
+  }
+
+  legend {
+    @apply p-0;
+  }
+
+  progress {
+    @apply align-baseline;
+  }
+
+  summary {
+    @apply block;
+  }
+
+  ul, ol {
+    @apply pl-5 mb-4 list-outside;
+  }
+
+  ul {
+    @apply list-disc;
+    list-style: disc !important;
+  }
+
+  ol {
+    @apply list-decimal;
+    list-style: decimal !important;
+  }
+
+  li {
+    @apply mb-0;
+
+    > ul,
+    > ol {
+      @apply ml-5 mb-0;
+    }
+
+    p {
+      @apply mb-0;
+    }
+  }
+
+  dl {
+    @apply mb-4;
+  }
+
+  dt {
+    @apply font-bold;
+  }
+
+  dd {
+    @apply ml-4 mb-4;
+  }
+
+  fieldset {
+    @apply m-0 p-2 border border-gray-300;
+  }
+
+  blockquote {
+    @apply border-l-4 border-gray-300 pl-4 italic my-4;
+  }
+
+  pre {
+    @apply bg-gray-700 rounded-md text-white p-4 overflow-x-auto mb-4;
+  }
+}

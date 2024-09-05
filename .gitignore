@@ -1,0 +1,58 @@
+# Build output
+/dist
+
+# Dependencies
+node_modules/
+.packages-lock.json
+package-lock.json
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Firebase related files
+.firebase/
+.firebaserc
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Compiled binary addons (usually for native modules)
+build/Release
+
+# Cache and temporary files
+.npm
+.eslintcache
+.node_repl_history
+
+# Configuration and environment
+.env
+.yarn-integrity
+
+# Generated files and directories
+.dataconnect
+/.cache
+*.code-workspace
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Editor directories and files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Testing
+coverage/
+
+# Temporary files
+*.tmp
+*.temp

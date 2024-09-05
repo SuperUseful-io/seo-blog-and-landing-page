@@ -1,0 +1,16 @@
+<div class="navbar bg-base-100 bg-neutral text-neutral-content">
+  <div class="container mx-auto lg:max-w-screen-lg flex justify-between">
+    <div class="navbar-start">
+      <a href="/" class="text-2xl font-bold logo">
+        {% image defaultSettings.logo, "Site logo", "logo-icon", "25, 30, 60" %}
+        {{ defaultSettings.site_name }}
+      </a>
+    </div>
+    <div class="navbar-end flex">
+      <ul class="menu menu-horizontal px-1">
+        <li><a class="btn btn-sm btn-ghost" href="/blog">Blog</a></li>
+        <li><a class="btn btn-sm btn-ghost" href="#">Login</a></li>
+      </ul>
+    </div>
+  </div>
+</div>

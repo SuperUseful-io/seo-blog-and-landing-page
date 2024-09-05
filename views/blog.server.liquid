@@ -1,0 +1,58 @@
+---
+title: Super Useful Blog
+layout: main
+permalink: /blog/
+pagination:
+    data: blogSuperUseful
+    size: 4
+    reverse: true
+    alias: posts
+---
+
+<h1 class="font-bold text-3xl md:text-5xl text-center py-10">The Company Blog</h1>
+
+<!-- Blog post grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-10">
+  {% for post in posts %}
+    <div>
+      <a href="{{ post.title | slugify }}" aria-label="Read blog post: {{post.title}}" class="block">
+        <div class="blog-post-card card bg-base-100 shadow-xl overflow-hidden">
+          {% if post.hero_image %}
+            <figure>
+              {% image post.hero_image, post.hero_image_alt %}
+            </figure>
+          {% endif %}
+          <div class="card-body">
+            <h2 class="card-title">{{post.title}}</h2>
+            <p class="text-sm text-gray-500 pb-2">{{ post.date | date: "%b %d, %Y"}}</p>
+            {% if post.description %}
+              <p>{{post.description | truncate: 150 }}</p>
+            {% endif %}
+          </div>
+        </div>
+      </a>
+    </div>
+  {% endfor %}
+</div>
+
+<!-- Pagination controls -->
+{% assign totalPages = pagination.pages | size %}
+<div class="flex justify-center py-10">
+  <div class="join">
+    <a 
+      class="join-item btn {% unless pagination.href.previous %}btn-disabled{% endunless %}" 
+      href="{{ pagination.href.previous | default: '#' }}"
+      {% unless pagination.href.previous %}aria-disabled="true"{% endunless %}
+    >
+      «
+    </a>
+    <button class="join-item btn">Page {{ pagination.pageNumber | plus: 1 }} of {{totalPages}}</button>
+    <a 
+      class="join-item btn {% unless pagination.href.next %}btn-disabled{% endunless %}" 
+      href="{{ pagination.href.next | default: '#' }}"
+      {% unless pagination.href.next %}aria-disabled="true"{% endunless %}
+    >
+      »
+    </a>
+  </div>
+</div>
