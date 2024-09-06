@@ -111,22 +111,23 @@ module.exports = function(eleventyConfig) {
 
   // Image processing function
   async function processImage(src, alt, classes = "", widths = "192, 384, 768, 1536", sizes = "100vw") {
-
-    let imageOptions = {
+    const imageOptions = {
       widths: widths.split(',').map(w => parseInt(w.trim(), 10)),
       formats: ['webp', 'jpeg'],
       outputDir: './dist/img/',
       urlPath: '/img/',
     };
 
+    const imageAttributes = {
+      alt,
+      sizes,
+      class: classes,
+      loading: "lazy",
+      decoding: "async",
+    };
+
     try {
-      let metadata = await Image(src, imageOptions);
-      let imageAttributes = {
-        alt,
-        sizes,
-        loading: "lazy",
-        decoding: "async",
-      };
+      const metadata = await Image(src, imageOptions);
       return Image.generateHTML(metadata, imageAttributes);
     } catch (error) {
       console.warn(`Failed to process image ${src}: ${error.message}`);
@@ -143,26 +144,7 @@ module.exports = function(eleventyConfig) {
     src = src.replace(/^["'](.+)["']$/, '$1');
     alt = alt.replace(/^["'](.+)["']$/, '$1');
 
-    let imageOptions = {
-      widths: widths.split(',').map(w => parseInt(w.trim(), 10)),
-      formats: ['webp', 'jpeg'],
-      outputDir: './dist/img/',
-      urlPath: '/img/',
-    };
-
-    try {
-      let metadata = await Image(src, imageOptions);
-      let imageAttributes = {
-        alt,
-        sizes,
-        loading: "lazy",
-        decoding: "async",
-      };
-      return Image.generateHTML(metadata, imageAttributes);
-    } catch (error) {
-      console.warn(`Failed to process image ${src}: ${error.message}`);
-      return `<img src="${src}" alt="${alt}" class="${classes}" loading="lazy">`;
-    }
+    return processImage(src, alt, classes, widths, sizes);
   });
 
   return {
