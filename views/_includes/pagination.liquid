@@ -1,0 +1,22 @@
+{% assign totalPages = pagination.pages | size %}
+{% if totalPages > 1 %}
+  <div class="flex justify-center py-5">
+    <div class="join">
+      <a 
+        class="join-item btn {% unless pagination.href.previous %}btn-disabled{% endunless %}" 
+        href="{{ pagination.href.previous | default: '#' }}"
+        {% unless pagination.href.previous %}aria-disabled="true"{% endunless %}
+      >
+        «
+      </a>
+      <button class="join-item btn">Page {{ pagination.pageNumber | plus: 1 }} of {{totalPages}}</button>
+      <a 
+        class="join-item btn {% unless pagination.href.next %}btn-disabled{% endunless %}" 
+        href="{{ pagination.href.next | default: '#' }}"
+        {% unless pagination.href.next %}aria-disabled="true"{% endunless %}
+      >
+        »
+      </a>
+    </div>
+  </div>
+{% endif %}
