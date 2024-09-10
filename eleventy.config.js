@@ -6,8 +6,32 @@ const tailwindcss = require('tailwindcss');
 const autoprefixer = require('autoprefixer');
 const htmlmin = require("html-minifier-terser");
 const path = require('path');
+const fetch = require('node-fetch');
+const dotenv = require('dotenv');
+
+dotenv.config();
 
 module.exports = function(eleventyConfig) {
+  // Add global data
+  eleventyConfig.addGlobalData("blogSuperUseful", async () => {
+    if (process.env.SUPER_USEFUL_API) {
+      const baseUrl = process.env.SERVER_URL ? process.env.SERVER_URL : 'https://api.suf.io';
+      console.log('API key found. Fetching blog posts from:', baseUrl);
+
+      try {
+        const response = await fetch(`${baseUrl}/blog/get?key=${process.env.SUPER_USEFUL_API}`);
+        const data = await response.json();
+        console.log(`Fetched ${data.posts.length} blog posts`);
+        return data.posts;
+      } catch (error) {
+        console.error('Error fetching blog posts:', error);
+        return [];
+      }
+    } else {
+      console.warn('SUPER_USEFUL_API key not found in environment variables. Initiating local blog posts.');
+      return [];
+    }
+  });
 
   // Pick between local or server blog source
   eleventyConfig.ignores.add(`views/blog.${process.env.SUPER_USEFUL_API ? 'local' : 'server'}.liquid`);
@@ -17,7 +41,6 @@ module.exports = function(eleventyConfig) {
 
   // Pass through assets
   eleventyConfig.addPassthroughCopy("assets");
-
 
   // Add support for RSS feed
   eleventyConfig.addPlugin(pluginRss);
@@ -124,6 +147,7 @@ module.exports = function(eleventyConfig) {
       class: classes,
       loading: "lazy",
       decoding: "async",
+      itemprop: "image",
     };
 
     try {
@@ -146,6 +170,32 @@ module.exports = function(eleventyConfig) {
 
     return processImage(src, alt, classes, widths, sizes);
   });
+
+  // Add collection for blog posts
+  eleventyConfig.addCollection("post", function(collectionApi) {
+    return collectionApi.getFilteredByGlob("views/blog/*.md");
+  });
+
+  // // Add custom event to fetch blog posts before build
+  // eleventyConfig.on('beforeBuild', async () => {
+  //   if (process.env.SUPER_USEFUL_API) {
+  //     const baseUrl = process.env.NODE_ENV === 'production' ? 'https://api.suf.io' : 'http://localhost:3000';
+  //     console.log('API key found. Fetching blog posts from:', baseUrl);
+
+  //     try {
+  //       const response = await fetch(`${baseUrl}/blog/get?key=${process.env.SUPER_USEFUL_API}`);
+  //       const data = await response.json();
+  //       eleventyConfig.addGlobalData('blogSuperUseful', data.posts);
+  //       console.log('~Global Data Added');
+  //     } catch (error) {
+  //       console.error('Error fetching blog posts:', error);
+  //       eleventyConfig.addGlobalData('blogSuperUseful', []);
+  //     }
+  //   } else {
+  //     console.warn('SUPER_USEFUL_API key not found in environment variables. Initiating local blog posts.');
+  //     eleventyConfig.addGlobalData('blogSuperUseful', []);
+  //   }
+  // });
 
   return {
     dir: {
