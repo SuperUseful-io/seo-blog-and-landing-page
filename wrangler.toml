@@ -5,4 +5,4 @@ send_metrics = false
 
 [env.production.vars]
 NODE_ENV = "production"
-SUPER_USEFUL_API_OLD = ""
+SUPER_USEFUL_API = ""
