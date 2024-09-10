@@ -1,17 +1,17 @@
 ---
 layout: blog_post
+page_type: blog_post
 
 title: "The Art of Placeholder Text"
 description: "Explore the world of Lorem Ipsum while mastering Markdown features like headers, lists, links, images, code blocks, and more in this fun, comprehensive guide."
 hero_image: 
-  url: "https://placehold.co/600x400/31343C/EEE"
+  url: "https://placehold.co/990x660/31343C/EEE"
   alt: "Placeholder image alt tag goes here"
-author: "Sufian"
+author: "John Doe"
 date: 2024-08-24
-page_type: blog_post
 tags:
-  - post
-  - Random Tag
+  - Markdown
+  - Lorem Ipsum
 ---
 
 ![{{ hero_image.alt }}]({{ hero_image.url }})

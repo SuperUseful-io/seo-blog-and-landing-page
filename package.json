@@ -6,7 +6,7 @@
   "scripts": {    
     "dev": "npm-run-all -p dev:*",
     "dev:css": "tailwindcss -i style/app.css -o dist/style/app.css --postcss --watch",
-    "dev:11ty": "NODE_ENV=development rm -rf dist && npx @11ty/eleventy --serve  --port=8081",
+    "dev:11ty": "rm -rf dist && npx @11ty/eleventy --serve  --port=8081",
     "build": "npm run build:css && npm run build:11ty",
     "build:11ty": "npx @11ty/eleventy",
     "build:css": "tailwindcss -i style/app.css -o dist/style/app.css --postcss --minify"
