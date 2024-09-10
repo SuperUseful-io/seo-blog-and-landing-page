@@ -4,53 +4,84 @@ pagination:
   data: blogSuperUseful
   size: 1
   alias: post
-permalink: "/blog/{{ post.title | slugify }}/"
+permalink: "/blog/{{ post.slug }}/"
+title: "{{ post.title }} | Company Name Blog"
+description: "{{ post.description | default: post.content | strip_html | truncate: 160 }}"
+
 ---
 
 {% comment %} Calculate the number of days since the post was published {% endcomment %}
-{% assign postDate = date | date: "%s" %}
+{% assign postDate = post.date | date: "%s" %}
 {% assign currentDate = "now" | date: "%s" %}
 {% assign daysAgo = currentDate | minus: postDate | divided_by: 86400 | round %}
 
-{% comment %} Breadcrumbs navigation {% endcomment %}
-<div class="breadcrumbs text-sm">
-  <ul>
-    <li><a href="/blog">Blog</a></li>
-    <li>{{ post.title }}</li>
-  </ul>
-</div>
+{% comment %} Structured data for SEO {% endcomment %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "{{ post.title }}",
+  "datePublished": "{{ post.date | date: '%Y-%m-%d' }}",
+  "dateModified": "{{ post.date | date: '%Y-%m-%d' }}",
+  "author": {
+    "@type": "Person",
+    "name": "{{ post.author }}"
+  },
+  "description": "{{ post.description | default: post.content | strip_html | truncate: 160 }}"
+}
+</script>
 
-<div class="blog-post container mx-auto max-w-screen-md pt-10">
-  {% comment %} Display post tags {% endcomment %}
-  {% if post.tags %}  
-    {% for tag in post.tags %}
-      {% if tag != 'post' %}
-        <div class="badge badge-ghost">{{ tag }}</div>
-      {% endif %}
-    {% endfor %}
-  {% endif %}
+<article itemscope itemtype="http://schema.org/BlogPosting">
+  {% comment %} Breadcrumbs navigation {% endcomment %}
+  <nav aria-label="Breadcrumb" class="breadcrumbs text-sm">
+    <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+      <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <a itemprop="item" href="/blog"><span itemprop="name">Blog</span></a>
+        <meta itemprop="position" content="1" />
+      </li>
+      <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <span itemprop="name">{{ post.title }}</span>
+        <meta itemprop="position" content="2" />
+      </li>
+    </ol>
+  </nav>
 
-  {% comment %} Post title {% endcomment %}
-  <h1 class="font-suf text-3xl md:text-5xl pt-4 pb-1">{{ post.title }}</h1>
-
-  {% comment %} Post metadata: publication date and author {% endcomment %}
-  <p class="text-xs text-gray-500 py-2">
-    Published  
-    <time datetime="{{ post.date | date: '%Y-%m-%d' }}">
-      {% if daysAgo < 50 %}
-        {{ daysAgo }} day{% if daysAgo != 1 %}s{% endif %} ago
-      {% else %}
-        on {{ post.date | date: "%b %d, %Y" }}
-      {% endif %}
-    </time> by {{ post.author }}
-  </p>
-
-  {% comment %} Post content {% endcomment %}
-  <article class="pb-10 text-md">
-    {% if post.hero_image %}
-      {% image post.hero_image, post.hero_image_alt %}
+  <div class="blog-post container mx-auto max-w-screen-md pt-10">
+    {% comment %} Display post tags {% endcomment %}
+    {% if post.tags %}  
+      {% for tag in post.tags %}
+        {% if tag != 'post' %}
+          <meta itemprop="keywords" content="{{ tag }}">
+          <span class="badge badge-ghost mr-2">{{ tag }}</span>
+        {% endif %}
+      {% endfor %}
     {% endif %}
-    {% assign markdownified_content = post.content | markdownify %}
-    {{ markdownified_content }}
-  </article>
-</div>
+
+    {% comment %} Post title {% endcomment %}
+    <h1 itemprop="headline" class="font-suf text-3xl md:text-5xl pt-4 pb-1">{{ post.title }}</h1>
+
+    {% comment %} Post metadata: publication date and author {% endcomment %}
+    <p class="text-xs text-gray-500 py-2">
+      Published
+      <time itemprop="datePublished" datetime="{{ post.date | date: '%Y-%m-%d' }}">
+        {% if daysAgo < 50 %}
+          {{ daysAgo }} day{% if daysAgo != 1 %}s{% endif %} ago
+        {% else %}
+          on {{ post.date | date: "%b %d, %Y" }}
+        {% endif %}
+      </time>
+      by <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">{{ post.author }}</span></span>
+    </p>
+
+    {% comment %} Post content {% endcomment %}
+    <div itemprop="articleBody" class="pb-10 text-md">
+      {% if post.hero_image %}
+        {% image post.hero_image, post.hero_image_alt %}
+      {% endif %}
+      {% assign markdownified_content = post.content | markdownify %}
+      {{ markdownified_content }}
+    </div>
+
+    <meta itemprop="dateModified" content="{{ post.date | date: '%Y-%m-%d' }}">
+  </div>
+</article>

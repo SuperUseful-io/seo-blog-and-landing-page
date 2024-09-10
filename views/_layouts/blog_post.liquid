@@ -6,42 +6,48 @@ layout: main
 {% assign currentDate = "now" | date: "%s" %}
 {% assign daysAgo = currentDate | minus: postDate | divided_by: 86400 | round %}
 
-<div class="breadcrumbs text-sm">
-  <ul>
-    <li><a href="/blog">Blog</a></li>
-    <li>{{title}}</li>
-  </ul>
-</div>
-<div class="container mx-auto max-w-screen-md pt-10">
+<article itemscope itemtype="http://schema.org/BlogPosting">
+  <nav aria-label="Breadcrumb" class="breadcrumbs text-sm">
+    <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+      <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <a itemprop="item" href="/blog"><span itemprop="name">Blog</span></a>
+        <meta itemprop="position" content="1" />
+      </li>
+      <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <span itemprop="name">{{title}}</span>
+        <meta itemprop="position" content="2" />
+      </li>
+    </ol>
+  </nav>
   
-{%  if tags %}  
-  {% for tag in tags %}
-    {% if tag != 'post' %}
-      <div class="badge badge-ghost mr-2">{{ tag }}</div>
+  <div class="container mx-auto max-w-screen-md pt-10">
+    {% if tags %}  
+      {% for tag in tags %}
+        {% if tag != 'post' %}
+          <meta itemprop="keywords" content="{{ tag }}">
+          <span class="badge badge-ghost mr-2">{{ tag }}</span>
+        {% endif %}
+      {% endfor %}
     {% endif %}
-  {% endfor %}
-{% endif %}
 
-  <h1 class="text-3xl md:text-5xl font-bold pt-4">{{ title }}</h1>
+    <h1 itemprop="headline" class="text-3xl md:text-5xl font-bold pt-4">{{ title }}</h1>
 
-  <p class="text-md text-gray-500 pb-2">
-    Published  
-    <time datetime="{{ date | date: '%Y-%m-%d' }}">
-      {% if daysAgo < 50 %}
-        {{ daysAgo }} day{% if daysAgo != 1 %}s{% endif %} ago
-      {% else %}
-        on {{ date | date: "%b %d, %Y"}}
-      {% endif %}
-    </time> by {{author}}
-  </p>
+    <p class="text-md text-gray-500 pb-2">
+      Published
+      <time itemprop="datePublished" datetime="{{ date | date: '%Y-%m-%d' }}">
+        {% if daysAgo < 50 %}
+          {{ daysAgo }} day{% if daysAgo != 1 %}s{% endif %} ago
+        {% else %}
+          on {{ date | date: "%b %d, %Y"}}
+        {% endif %}
+      </time>
+      by <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">{{author}}</span></span>
+    </p>
 
+    <div itemprop="articleBody" class="blog-post mt-5 pb-10 text-md">
+      {{ content | markdownify }}
+    </div>
 
-
-
-
-
-  <div class="blog-post mt-5 pb-10 text-md">
-    {{ content | markdownify }}
+    <meta itemprop="dateModified" content="{{ date | date: '%Y-%m-%d' }}">
   </div>
-
-</div>
+</article>
